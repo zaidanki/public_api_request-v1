@@ -15,14 +15,14 @@ gallery.innerHTML = '';
 
 let counter = 0; // counter for the while loop
 
-async function fetchThis(){ // a wrapper function to use async to wait for my fetches to run so that they all would load
-while(true){ // a loop for 12 times
-  await fetch('https://randomuser.me/api/?nat=us') // only english names will appear with us nationality
-        .then(e => e.json())
-        .then(e => e.results)
-        .then(e =>{
-counter++
-            gallery.innerHTML += `  <div class="card" onclick="details(this)" id="${counter}">
+async function fetchThis() { // a wrapper function to use async to wait for my fetches to run so that they all would load
+    while (true) { // a loop for 12 times
+        await fetch('https://randomuser.me/api/?nat=us') // only english names will appear with us nationality
+            .then(e => e.json())
+            .then(e => e.results)
+            .then(e => {
+                counter++
+                gallery.innerHTML += `  <div class="card" onclick="details(this)" id="${counter}">
                     <div class="card-img-container">
                         <img class="card-img" src="${e[0].picture.large}" alt="profile picture">
                     </div>
@@ -34,46 +34,53 @@ counter++
                         <p hidden>${e[0].location.street} ${e[0].location.city}, ${e[0].location.state} ${e[0].location.postcode}</p>
                         <p hidden>${e[0].dob.date}</p>
                     </div>
-                </div>`})
+                </div>`
+            })
 
-        .catch(error =>
-            console.log('something went wrong' + error));
-if(counter === 12){
-    break;
-}}
+            .catch(error =>
+                console.log('something went wrong' + error));
+        if (counter === 12) {
+            break;
+        }
+    }
 }
 
 
- //functions
-function removeDetails(e){
+//functions
+function removeDetails(e) {
     const rmv = document.querySelector(e);
-rmv.remove();
+    rmv.remove();
 }
 fetchThis(); //running the wrapper function
 
 
 
-    function details(e) { // function that shows more specific details about the person when profile is clicked
-        const info = Array.from(e.lastElementChild.children);
-        const pic = e.firstElementChild.children[0].src;
-        let idNum = parseInt(e.id); // code storing the id ofc the element so it can be used to go next and previous elements
-        let prevNum = idNum -1;
-        let nextNum = idNum +1;
-        let prevElement = document.getElementById(prevNum);
+function details(e) { // function that shows more specific details about the person when profile is clicked
+    const info = Array.from(e.lastElementChild.children);
+    const pic = e.firstElementChild.children[0].src;
+    let idNum = parseInt(e.id); // code storing the id ofc the element so it can be used to go next and previous elements
+    let prevNum = idNum - 1;
+    let nextNum = idNum + 1;
+    let prevElement = document.getElementById(prevNum);
 
-        function prev(){
-            if(prevNum > 0) {
-                details(prevElement)
-            } else {alert('That is the first Profile')}
+    function prev() {
+        if (prevNum > 0) {
+            details(prevElement)
+        } else {
+            alert('That is the first Profile')
         }
-        let nextElement = document.getElementById(nextNum);
-        function next() {
-            if (nextNum < 13) {
-                details(nextElement)
-            }else {alert('That is the last Profile')}
-        }
+    }
+    let nextElement = document.getElementById(nextNum);
 
-        gallery.innerHTML += `<div class="modal-container">
+    function next() {
+        if (nextNum < 13) {
+            details(nextElement)
+        } else {
+            alert('That is the last Profile')
+        }
+    }
+
+    gallery.innerHTML += `<div class="modal-container">
                 <div class="modal">
                     <button type="button" id="modal-close-btn" class="modal-close-btn" onclick="removeDetails('.modal-container')"><strong>X</strong></button>
                     <div class="modal-info-container">
@@ -93,15 +100,15 @@ fetchThis(); //running the wrapper function
                 </div>
                 </div>`;
 
-        const prevBtn = document.querySelector('#modal-prev');
-        const nextBtn = document.querySelector('#modal-next');
-        prevBtn.addEventListener('click',prev);
-        nextBtn.addEventListener('click',next)
-    }
+    const prevBtn = document.querySelector('#modal-prev');
+    const nextBtn = document.querySelector('#modal-next');
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next)
+}
 
 const searchText = document.querySelector('#search-input');
 
-function searchInput () {
+function searchInput() {
     let li = Array.from(gallery.children);
     let newCounter = 0;
     // a function that searches names and compares them using the indexOf method and if it returns a number bigger than -1 then it is displayed
@@ -119,7 +126,7 @@ function searchInput () {
     }
 }
 
-    searchText.addEventListener('keyup',searchInput);
+searchText.addEventListener('keyup', searchInput);
 
 
 
