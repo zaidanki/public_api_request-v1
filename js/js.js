@@ -73,7 +73,8 @@ function details(e) { // function that shows more specific details about the per
     let nextElement = document.getElementById(nextNum);
 
     function next() {
-        if (nextNum < 13) {
+        const hiddenItems = document.querySelectorAll('.hide').length
+        if (nextNum < 13-hiddenItems ) {
             details(nextElement)
         } else {
             alert('That is the last Profile')
@@ -111,14 +112,20 @@ const searchText = document.querySelector('#search-input');
 function searchInput() {
     let li = Array.from(gallery.children);
     let newCounter = 0;
+    let idCount = 1;
     // a function that searches names and compares them using the indexOf method and if it returns a number bigger than -1 then it is displayed
     for (i = 0; i < li.length; i++) {
         const name = li[i].querySelector("h3").textContent.toUpperCase();
         if (name.indexOf(searchText.value.toUpperCase()) > -1) {
             li[i].style.display = "";
+            li[i].id = idCount
+            li[i].setAttribute('class','card')
+            idCount++
         } else {
             newCounter++
-            li[i].style.display = "none";
+            li[i].style.display = "none"
+            li[i].id = ''
+            li[i].setAttribute('class','hide')
         }
         if (newCounter === 12) {
             alert('There is no Names Matching ' + searchText.value + '!')
